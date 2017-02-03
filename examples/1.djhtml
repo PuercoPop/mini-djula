@@ -1,0 +1,9 @@
+{% if foo %}
+  {{ obligatory-message | uppercase | trim-left}}
+{% endif %}
+
+{# < implica que foo sea un numero #}
+{% if foo = 5 %}
+  {# Multiple arguments to a filter using :, whitespace and commas separate them #}
+  {{ conditional-message | max-length: 20, ... }}
+{% endif %}

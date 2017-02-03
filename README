@@ -1,0 +1,38 @@
+A reduced version of Djula made for the purpose of showing off the use of
+parser combinators.
+
+References
+==========
+
+- MaxPC
+- Smug
+- Monadic Parsers http://www.cs.nott.ac.uk/~pszgmh/bib.html#monparsing
+http://www.cs.nott.ac.uk/~pszgmh/monparsing.pdf
+
+- Functional Pearl Monadic parser http://www.cs.nott.ac.uk/~pszgmh/pearl.pdf
+
+Version abriged de lo anterior
+
+http://www.westpoint.edu/eecs/SiteAssets/SitePages/Faculty%20Publication%20Documents/Okasaki/jfp98sixth.pdf
+
+- Packrat https://pdos.csail.mit.edu/~baford/packrat/thesis/
+
+Monadic combinators and lazy evaluation enable elegant and direct
+implementations of packrat parsers in recent functional programming languages
+such as Haskell.
+
+
+FUN C T I ONA L P E A R L S
+Even Higher-Order Functions for Parsing
+or
+Why Would Anyone Ever Want To Use a
+Sixth-Order Function?
+CHRIS OKASAKI†
+
+
+Estos definen las propiedades algebraicas parsers que deben cumplir para ser monads (Wadler, 1992a; Wadler, 1992b
+
+- El paper de Wadler de How to turn a failurue into a list of successes
+
+- Parsec: Direct Style Monadic Parser Combinators For The Real World
+  http://research.microsoft.com/en-us/um/people/daan/download/papers/parsec-paper.pdf
