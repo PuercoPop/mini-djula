@@ -14,7 +14,7 @@
 (defgeneric %render (ast context stream)
   (:documentation ""))
 
-(defun render (template-path context &optional stream)
+(defun render (template-path context &optional (stream *standard-output*))
   (%render (caar (funcall (parse) (read-file template-path)))
            ; (parse (read-file template-path))
            context
