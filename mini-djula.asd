@@ -6,11 +6,10 @@
   :license "GPLv3+"
   :depends-on (#:alexandria
                #:string-case)
-  :components ((:file "lexer")
+  :components ((:static-file "lexer")
                (:file "ast")
-               (:file "parser-combinators")
+               (:static-file "parser-combinators")
                (:file "mpc")
                (:file "parser" :depends-on("parser-combinators"
-                                           "ast"
-                                           "lexer"))
+                                           "ast"))
                (:file "interpreter" :depends-on ("ast"))))

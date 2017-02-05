@@ -23,7 +23,9 @@
    #:.whitespace
    #:.word
    #:.is
-   #:.string-equal))
+   #:.string-equal
+   #:.plus
+   #:.eof))
 (in-package #:mpc)
 
 
@@ -187,3 +189,13 @@
 
 (defun .whitespace ()
   (.satisfies #'sb-unicode:whitespace-p))
+
+(defun .endp ()
+  (.not (.anything)))
+
+(defun .no-more-input ()
+  (.not (.anything)))
+
+(defun .eof ()
+  (parser-let* ((_ (.no-more-input)))
+    (.return nil)))

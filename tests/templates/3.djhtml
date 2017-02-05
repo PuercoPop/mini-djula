@@ -1,0 +1,3 @@
+{% if foo == "FU" %}
+  {{ obligatory-message }}
+{% endif %}

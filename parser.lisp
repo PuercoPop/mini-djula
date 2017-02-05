@@ -1,11 +1,10 @@
 (defpackage "PARSER"
   (:use "CL")
-  (:export ;; "*GRAMMAR*"
-           ;; "PARSE"
-   
-   #:.comment
-   #:.variable
-   #:.if-block))
+  (:export #:parse ;; "*GRAMMAR*"
+           #:.comment
+           #:.variable
+           #:.if-block
+           #:.text))
 (in-package "PARSER")
 
 
@@ -104,4 +103,34 @@
     (_ (.if-block-end)))
    (mpc:.return (ast:make-if-block expression consequent))))
 
-(defun parse (in))
+(defun .text ()
+  (mpc:.many (mpc:.plus (mpc::.letter)
+                        (mpc:.whitespace))))
+
+;; (defun .text ()
+;;   ;; AST:text
+;;   (mpc:parser-let*
+;;       ((text (mpc:.many (mpc:.anything))))
+;;     (mpc:.return (ast:make-text-node (coerce text 'string)))))
+
+(defun .text ()
+  ;; AST:text
+  (mpc:parser-let*
+      ((text (mpc:.anything)))
+    (mpc:.return (ast:make-text-node (string text)))))
+
+(defun .top-level ()
+  (mpc::.or (.comment)
+            (.variable)
+            (.if-block)
+            (.text)))
+
+;; Mejor strategia
+;; Parse recibe tokens?
+;; Luego llama a top-level
+;; Luego un constant-folding step de TEXT-NODES
+(defun parse ()
+  ;; Si no estoy mirando al .eof llamar a .top-level
+  (mpc:parser-let* ((ast (mpc:.many (.top-level)))
+                    (eof (mpc::.endp)))
+    (mpc:.return ast)))

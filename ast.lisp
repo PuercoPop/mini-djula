@@ -4,18 +4,32 @@
   (:export
    #:make-variable
    #:variable
-   #:make-if-block))
+   #:make-if-block
+   #:variable-name
+   #:text-node
+   #:make-text-node
+   #:text-node-value))
 (in-package "AST")
 
 (defclass ast-node ()
   ())
+
+(defclass text-node (ast-node)
+  ((value :initarg :value :reader text-node-value)))
+
+(defmethod print-object ((obj text-node) stream)
+  (print-unreadable-object (obj stream :type t)
+    (format stream "~A" (text-node-value obj))))
+
+(defun make-text-node (text)
+  (make-instance 'text-node :value text))
 
 (defparameter +unbound-variable+ (gensym "UNBOUND-VARIABLE")
   "Designator for unbound variables")
 
 (defclass variable (ast-node)
   ((name :initarg :name
-         :reader name
+         :reader variable-name
          :type symbol :documentation "A symbol denoting the variable name.")
    (value :initarg :value
           :initform +unbound-variable+ ; TODO better to leave the slot unbound?
@@ -27,7 +41,7 @@
 
 (defmethod print-object ((obj variable) stream)
   (print-unreadable-object (obj stream :type t)
-    (format stream "~A" (name obj))))
+    (format stream "~A" (variable-name obj))))
 
 (defun make-variable (name)
   (make-instance 'variable :name name))
