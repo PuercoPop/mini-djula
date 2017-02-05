@@ -28,7 +28,9 @@
   (format stream "~A" (ast:text-node-value text)))
 
 (defun lookup-variable (key ctx)
-  (cdr (assoc key ctx)))
+  (alexandria:if-let ((value (cdr (assoc key ctx))))
+    value
+    (error "Key ~A not found in context, ~A." key ctx)))
 
 (defmethod %render ((variable ast:variable) context stream)
   (format stream "~A" (lookup-variable (ast:variable-name variable) context)))
