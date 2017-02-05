@@ -15,7 +15,7 @@
   (:documentation ""))
 
 (defun render (template-path context &optional stream)
-  (%render (funcall (parse) (read-file template-path))
+  (%render (caar (funcall (parse) (read-file template-path)))
            ; (parse (read-file template-path))
            context
            stream))
