@@ -36,3 +36,7 @@ Estos definen las propiedades algebraicas parsers que deben cumplir para ser mon
 
 - Parsec: Direct Style Monadic Parser Combinators For The Real World
   http://research.microsoft.com/en-us/um/people/daan/download/papers/parsec-paper.pdf
+
+
+- Seminar: Monadic Parser Combinators
+  https://www.informatik.uni-kiel.de/~mh/lehre/seminare/ss04-sem-arbeiten/sadeghi.pdf
