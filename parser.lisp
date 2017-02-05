@@ -62,7 +62,8 @@
        (variable-name (mpc:.word))
        (_ (mpc:.any (mpc:.whitespace)))
        (_ (.variable-end)))
-    (mpc:.return (ast:make-variable (coerce variable-name 'string)))))
+    (mpc:.return (ast:make-variable (alexandria:make-keyword
+                                     (string-upcase (coerce variable-name 'string)))))))
 
 (defun .block-start ()
   (mpc:parser-let*
