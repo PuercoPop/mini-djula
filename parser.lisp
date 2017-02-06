@@ -62,8 +62,7 @@
        (variable-name (mpc:.word))
        (_ (mpc:.any (mpc:.whitespace)))
        (_ (.variable-end)))
-    (mpc:.return (ast:make-variable (alexandria:make-keyword
-                                     (string-upcase (coerce variable-name 'string)))))))
+    (mpc:.return (ast:make-variable variable-name))))
 
 (defun .block-start ()
   (mpc:parser-let*
@@ -83,7 +82,7 @@
        (_ (mpc:.any (mpc:.whitespace)))
        (_ (mpc:.string-equal "if"))
        (_ (mpc:.any (mpc:.whitespace)))
-       (variable (mpc:.word))
+       (variable (.boolean-expression))
        (_ (mpc:.any (mpc:.whitespace)))
        (_ (.block-end)))
     (mpc:.return variable)))
@@ -103,6 +102,10 @@
     (consequent (mpc:.any (mpc:.anything)))
     (_ (.if-block-end)))
    (mpc:.return (ast:make-if-block expression consequent))))
+
+(defun .boolean-expression ()
+  (mpc:parser-let* ((variable (mpc:.word)))
+    (mpc:.return (ast:make-variable variable))))
 
 (defun .text ()
   (mpc:.many (mpc:.plus (mpc::.letter)

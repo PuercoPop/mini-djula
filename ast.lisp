@@ -44,7 +44,8 @@
     (format stream "~A" (variable-name obj))))
 
 (defun make-variable (name)
-  (make-instance 'variable :name name))
+  (let ((name-keyword (alexandria:make-keyword (string-upcase (coerce name 'string)))))
+    (make-instance 'variable :name name-keyword)))
 
 (defclass filter (ast-node)
   ((filter-name :initarg :filter
