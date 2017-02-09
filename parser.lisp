@@ -99,7 +99,7 @@
 (defun .if-block ()
   (mpc:parser-let*
    ((expression (.if-block-start))
-    (consequent (mpc:.any (mpc:.anything)))
+    (consequent (mpc:.any (.top-level)))
     (_ (.if-block-end)))
    (mpc:.return (ast:make-if-block expression consequent))))
 
