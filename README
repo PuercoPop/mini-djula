@@ -33,6 +33,7 @@ CHRIS OKASAKI†
 Estos definen las propiedades algebraicas parsers que deben cumplir para ser monads (Wadler, 1992a; Wadler, 1992b
 
 - El paper de Wadler de How to turn a failurue into a list of successes
+- https://rkrishnan.org/files/wadler-1985.pdf
 
 - Parsec: Direct Style Monadic Parser Combinators For The Real World
   http://research.microsoft.com/en-us/um/people/daan/download/papers/parsec-paper.pdf
