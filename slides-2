@@ -1,0 +1,209 @@
+How to Replace Failure by a List of Successes
+            Philip Wadler 1985
+
+Success ⇒ Lista que contiendo el valor de retorno
+Fail ⇒ Lista vacia
+
+Backtracking
+
+Success ⇒ Lista con valores posibles
+
+# En vez de devolver 3 valores podemos
+
+Nueva Interfaz
+
+Success ⇒ Lista que contiendo los posibles matches
+Fail ⇒ Lista vacia
+
+             (A, B)
+A : Valor de retorno del parser
+B : El resto de los tokens a procesar
+
+
+Interludio
+
+¿Qué es algebra abstracta?
+
+   El estudio de 
+Estructuras Algebricas
+
+¿Qué es una estructura Algebraica?
+
+Un set con operaciones de aridad finita
+
+Ejemplos
+▸ Anillo
+▸ Grupo
+▸ Campo
+▸ Red (Lattice)
+
+
+# Ejemplo concreto con adicion
+¿Qué es un anillo?
+
+¿Por qué me estas hablando de esto?
+# Cuando podemos probar que se cumplen unas propiedas sabemos que otras no tan inmediatas se derivan de esta.
+"Civilization advances by
+ extending the number of 
+ important operations which
+ we can perform without 
+ thinking about them."
+   — Alfred North Whitehead 
+
+
+¿Qué es un monad?
+
+⛳ 2 Operaciones
+⛳ 3 Leyes
+
+⛳ Bind
+⛳ Return
+
+⛳ Left Identity
+⛳ Right Identity
+⛳ Associativity
+
+# No las vamos a explicar
+# Insertar meme not a monad tutorial
+
+# No importa
+  Más relevante
+ ¡Para qué sirve!
+
+Monadic Parser Combinators
+
+Parsers Primitivos
+
+⛳ Retornar cualquier valor
+⛳ Fallar
+⛳ Consumir un token
+
+(defun .return (value)
+  (lambda (tokens)
+    (list (cons value tokens))))
+
+(defun .fail ()
+  (lambda (tokens)
+    (declare (ignore tokens))
+    nil))
+
+(defun .anything ()
+  (lambda (tokens)
+    (if (null tokens)
+        nil
+        (list (cons (car tokens)
+                    (cdr tokens))))))
+
+#
+
+Combinadores Base
+
+bind, sequenciación
+
+(defun parser-bind (parser function)
+  (lambda (tokens)
+    (loop :for (value . tokens) :in (funcall parser tokens)
+          :append (funcall (funcall function value) tokens))))
+
+plus, alternación
+
+(defun .plus (parser-1 parser-2)
+  "Non-deterministic choice"
+  (lambda (tokens)
+    (append (funcall parser-1 tokens)
+            (funcall parser-2 tokens))))
+
+# Algunos ejemplos
+
+(defun .satisfies (predicate)
+  (parser-bind (.anything)
+               (lambda (x)
+                 (if (funcall predicate x)
+                     (.return x)
+                     (.fail)))))
+
+(defun .char= (char)
+  (.satisfies (lambda (c) (char= c char))))
+
+"AB"
+
+(parser-bind (.char= #\A)
+               (lambda (a)
+                 (parser-bind (.char= #\B)
+                              (lambda (b)
+                                (.return (list :matched a b))))))
+
+# Memeficar
+Un poco largo no?
+
+# Para mostrar que Sequenciar es muy largo       
+
+Monadic List Comprehension Syntax
+#              AKA
+Syntax sugar para la sequenciación
+
+
+
+(defmacro parser-let* (bindings &body body)
+  (if bindings
+      (let ((symbol (caar bindings))) ; caar => (first (first ...))
+        `(parser-bind ,@(cdr (first bindings))
+                (lambda (,symbol) 
+                  (declare (ignorable ,symbol))
+                  (parser-let* ,(cdr bindings)
+                    ,@body))))
+      `(progn ,@body)))
+
+# Memeficar
+@DAFUQ
+
+(parser-let* ((a (.char #\A))
+              (b (.char #\B)))
+  (.return (list :matched a b)))
+
+# Esta vez explicando el macro
+(defmacro parser-let* (bindings &body body)
+  (if bindings
+      (let ((symbol (caar bindings))) ; caar => (first (first ...))
+        `(parser-bind ,@(cdr (first bindings))
+                (lambda (,symbol) 
+                  (parser-let* ,(cdr bindings)
+                    ,@body))))
+      `(progn ,@body)))
+
+# Ejemplo de macro expasion paso a paso
+
+(parser-let* ((a (.char #\A))
+              (b (.char #\B)))
+  (.return (list :matched a b)))
+
+(parser-bind (.char #\A)
+             (lambda (a)
+               (parser-let* ((b (.char #\B)))
+                 (.return (list :matched a b)))))
+
+(parser-bind (.char #\A)
+             (lambda (a)
+               (parser-bind (.char #\B)
+                            (lambda (b)
+                              (declare (ignorable b))
+                              (parser-let* nil
+                                (.return (list :matched a b)))))))
+
+(parser-bind (.char #\A)
+             (lambda (a)
+               (parser-bind (.char #\B)
+                            (lambda (b)
+                              (declare (ignorable b))
+                              (progn (.return (list :matched a b)))))))
+
+# Ejemplos de parsers
+
+Implementacion
+
+¿Preguntas?
+
+# Hacerlo imagen?
+SHOW ME DA CODE!
+
+FIN

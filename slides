@@ -1,0 +1,44 @@
+# Para visualizar los slides usen SENT
+# http://tools.suckless.org/sent/
+
+# Qué espero que se lleven de la charla
+
+# Utilidad practica de los monads
+
+Monadic Parser Combinators
+
+ Javier Olaechea
+   @PuercoPop
+
+github.com/PuercoPop/mini-djula
+
+¿Qué es un parser?
+
+# Qué hace?
+Funciones
+▸ Reconocer patrónes
+▸ Devolver un valor
+
+# Esto nos permite
+Transformación
+
+¿Qué es un Combinator?
+
+▸ Recibe parser(s) 
+▸ Devuelve un parser
+
+Interfaz
+
+Recibe una sequencia de tokens
+
+devuelve 3 valores:
+▸ El valor de retorno
+▸ Si el parser fue exitoso o no
+▸ Los tokens por consumir
+
+▸ Alternatacion
+▸ Sequenciación
+▸ Optional
+
+# Como Imagen
+To the Code!
