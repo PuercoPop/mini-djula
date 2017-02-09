@@ -4,11 +4,16 @@
   (:export
    #:make-variable
    #:variable
-   #:make-if-block
    #:variable-name
+
    #:text-node
    #:make-text-node
-   #:text-node-value))
+   #:text-node-value
+
+   #:if-block
+   #:make-if-block
+   #:then-block
+   #:test-block))
 (in-package "AST")
 
 (defclass ast-node ()
@@ -54,8 +59,8 @@
                 namespace to resolve to a function.")))
 
 (defclass if-block (ast-node)
-  ((test :initarg :test :reader test :documentation "The test case.")
-   (then-block :initarg :then :reader then :documentation "The block to use when the test is true.")
+  ((test :initarg :test :reader test-block :documentation "The test case.")
+   (then-block :initarg :then :reader then-block :documentation "The block to use when the test is true.")
    (else-block :initarg :else :reader else :documentation "The block to use when the test is false."))
   (:documentation "Represents an if block"))
 

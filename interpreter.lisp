@@ -34,3 +34,7 @@
 
 (defmethod %render ((variable ast:variable) context stream)
   (format stream "~A" (lookup-variable (ast:variable-name variable) context)))
+
+(defmethod %render ((if-block ast:if-block) context stream)
+  (%render (ast:test-block if-block) context stream)
+  (%render (ast:then-block if-block) context stream))
