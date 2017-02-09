@@ -169,9 +169,14 @@
 (defun .upper-case-char ()
   (.satisfies #'sb-unicode:uppercase-p))
 
+(defun .punctuation ()
+  (.plus (.char= #\-)
+         (.char= #\_)))
+
 (defun .letter ()
-  (.plus (.lower-case-char)
-         (.upper-case-char)))
+  (.plus (.plus (.lower-case-char)
+                (.upper-case-char))
+         (.punctuation)))
 
 (defun .word ()
   (.many (.letter)))
