@@ -82,7 +82,7 @@
        (_ (mpc:.any (mpc:.whitespace)))
        (_ (mpc:.string-equal "if"))
        (_ (mpc:.any (mpc:.whitespace)))
-       (variable (.boolean-expression))
+       (variable (.predicate))
        (_ (mpc:.any (mpc:.whitespace)))
        (_ (.block-end)))
     (mpc:.return variable)))
@@ -103,9 +103,29 @@
     (_ (.if-block-end)))
    (mpc:.return (ast:make-if-block expression consequent))))
 
+(defun .equal-sign ()
+  (mpc:parser-let* ((_ (mpc:.char= #\=))
+                    (_ (mpc:.char= #\=)))
+    (mpc:.return :=)))
+
+(defun .equality-comparison ()
+  (mpc:parser-let* ((variable (.variable-word))
+                    (_ (mpc:.any (mpc:.whitespace)))
+                    (_ (.equal-sign))
+                    (_ (mpc:.any (mpc:.whitespace)))
+                    (literal (mpc:.word)))
+    (mpc:.return (ast:make-comparison variable literal))))
+
 (defun .boolean-expression ()
-  (mpc:parser-let* ((variable (mpc:.word)))
-    (mpc:.return (ast:make-variable variable))))
+  (.equality-comparison))
+
+(defun .variable-word ()
+    (mpc:parser-let* ((variable (mpc:.word)))
+      (mpc:.return (ast:make-variable variable))))
+
+(defun .predicate ()
+  (mpc::.or (.variable-word)
+            (.boolean-expression)))
 
 (defun .text ()
   (mpc:.many (mpc:.plus (mpc::.letter)

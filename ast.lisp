@@ -13,7 +13,11 @@
    #:if-block
    #:make-if-block
    #:then-block
-   #:test-block))
+   #:test-block
+   #:comparison
+   #:comparison-variable
+   #:comparison-literal
+   #:make-comparison))
 (in-package "AST")
 
 (defclass ast-node ()
@@ -68,6 +72,15 @@
   (declare (ignore else-block))
   (make-instance 'if-block :test test-expression
                            :then then-block))
+
+(defclass comparison ()
+  ((variable :initarg :variable :reader comparison-variable)
+   (literal :initarg :literal :reader comparison-literal))
+  (:documentation "Compare if VARIABLE is EQUALP to LITERAL."))
+
+(defun make-comparison (variable literal)
+  (make-instance 'comparison :variable variable
+                             :literal literal))
 
 (defclass cycle (ast-node)
   ((elements :initarg :elements
