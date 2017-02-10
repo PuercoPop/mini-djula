@@ -33,17 +33,10 @@
 (defun make-text-node (text)
   (make-instance 'text-node :value text))
 
-(defparameter +unbound-variable+ (gensym "UNBOUND-VARIABLE")
-  "Designator for unbound variables")
-
 (defclass variable (ast-node)
   ((name :initarg :name
          :reader variable-name
-         :type symbol :documentation "A symbol denoting the variable name.")
-   (value :initarg :value
-          :initform +unbound-variable+ ; TODO better to leave the slot unbound?
-          :reader value
-          :documentation "The value bound to the variable.")
+         :type symbol :documentation "A symbol denoting the variable name.") 
    (filters :initarg :filters
             :initform nil
             :documentation "A list of filters to apply.")))
