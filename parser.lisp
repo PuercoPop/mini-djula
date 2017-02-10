@@ -103,25 +103,37 @@
     (_ (.if-block-end)))
    (mpc:.return (ast:make-if-block expression consequent))))
 
+(defun .variable-word ()
+  (mpc:parser-let* ((variable (mpc:.word)))
+    (mpc:.return (ast:make-variable variable))))
+
+(defun .string-literal ()
+  (mpc:parser-let* ((_ (mpc:.char= #\"))
+                    (string (mpc:.word))
+                    (_ (mpc:.char= #\")))
+    (mpc:.return (ast:make-literal (coerce string 'string)))))
+
+(defun .var-or-val ()
+  "Variable or value."
+  ;; XXX: Order matters
+  (mpc:.plus (.string-literal)
+             (.variable-word)))
+
 (defun .equal-sign ()
   (mpc:parser-let* ((_ (mpc:.char= #\=))
                     (_ (mpc:.char= #\=)))
     (mpc:.return :=)))
 
 (defun .equality-comparison ()
-  (mpc:parser-let* ((variable (.variable-word))
+  (mpc:parser-let* ((left (.var-or-val))
                     (_ (mpc:.any (mpc:.whitespace)))
                     (_ (.equal-sign))
                     (_ (mpc:.any (mpc:.whitespace)))
-                    (literal (mpc:.word)))
-    (mpc:.return (ast:make-comparison variable literal))))
+                    (right (.var-or-val)))
+    (mpc:.return (ast:make-comparison left right))))
 
 (defun .boolean-expression ()
   (.equality-comparison))
-
-(defun .variable-word ()
-    (mpc:parser-let* ((variable (mpc:.word)))
-      (mpc:.return (ast:make-variable variable))))
 
 (defun .predicate ()
   (mpc::.or (.variable-word)

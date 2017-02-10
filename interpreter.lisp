@@ -51,8 +51,10 @@
   (lookup-variable (ast:variable-name node)
                    context))
 
+(defmethod eval ((node ast:literal) context)
+  (declare (ignore context))
+  (ast:literal-value node))
+
 (defmethod eval ((node ast:comparison) context)
-  (equalp (ast:comparison-literal node)
-          ;; TODO: refactor with EVAL on AST:VARIABLE
-          (lookup-variable (ast:comparison-variable node)
-                           context)))
+  (equalp (eval (ast:comparison-left node))
+          (eval (ast:comparison-right node))))

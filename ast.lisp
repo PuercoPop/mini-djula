@@ -14,10 +14,15 @@
    #:make-if-block
    #:then-block
    #:test-block
+
    #:comparison
-   #:comparison-variable
-   #:comparison-literal
-   #:make-comparison))
+   #:make-comparison
+   #:comparison-left
+   #:comparison-right
+
+   #:literal
+   #:make-literal
+   #:literal-value))
 (in-package "AST")
 
 (defclass ast-node ()
@@ -49,6 +54,16 @@
   (let ((name-keyword (alexandria:make-keyword (string-upcase (coerce name 'string)))))
     (make-instance 'variable :name name-keyword)))
 
+(defclass literal (ast-node)
+  ((value :initarg :value :reader literal-value)))
+
+(defmethod print-object ((obj literal) stream)
+  (print-unreadable-object (obj stream :type t)
+    (format stream "~A" (literal-value obj))))
+
+(defun make-literal (value)
+  (make-instance 'literal :value value))
+
 (defclass filter (ast-node)
   ((filter-name :initarg :filter
                 :reader filter-name
@@ -67,13 +82,13 @@
                            :then then-block))
 
 (defclass comparison ()
-  ((variable :initarg :variable :reader comparison-variable)
-   (literal :initarg :literal :reader comparison-literal))
+  ((left :initarg :left :reader comparison-left)
+   (right :initarg :right :reader comparison-right))
   (:documentation "Compare if VARIABLE is EQUALP to LITERAL."))
 
 (defun make-comparison (variable literal)
-  (make-instance 'comparison :variable variable
-                             :literal literal))
+  (make-instance 'comparison :left variable
+                             :right literal))
 
 (defclass cycle (ast-node)
   ((elements :initarg :elements
