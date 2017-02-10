@@ -1,6 +1,7 @@
 (defpackage "MINI-DJULA/SMOKE-TESTS"
   (:use #:cl
         #:prove))
+(in-package "MINI-DJULA/SMOKE-TESTS")
 
 (setf prove:*enable-colors* t)
 
