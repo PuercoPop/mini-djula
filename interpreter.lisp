@@ -2,6 +2,7 @@
   (:use "CL")
   (:import-from #:parser
                 #:parse)
+  (:shadow #:eval)
   (:export "RENDER"))
 (in-package "INTERPRETER")
 
@@ -28,6 +29,10 @@
   (format stream "~A" (ast:text-node-value text)))
 
 (defun lookup-variable (key ctx)
+  (cdr (assoc key ctx)))
+
+#+strict-version
+(defun lookup-variable (key ctx)
   (alexandria:if-let ((value (cdr (assoc key ctx))))
     value
     (error "Key ~A not found in context, ~A." key ctx)))
@@ -36,5 +41,18 @@
   (format stream "~A" (lookup-variable (ast:variable-name variable) context)))
 
 (defmethod %render ((if-block ast:if-block) context stream)
-  (%render (ast:test-block if-block) context stream)
-  (%render (ast:then-block if-block) context stream))
+  (when (eval (ast:test-block if-block) context)
+    (%render (ast:then-block if-block) context stream)))
+
+(defgeneric eval (node context)
+  (:documentation "Evaluate the NODE using CONTEXT to resolve any bindings."))
+
+(defmethod eval ((node ast:variable) context)
+  (lookup-variable (ast:variable-name node)
+                   context))
+
+(defmethod eval ((node ast:comparison) context)
+  (equalp (ast:comparison-literal node)
+          ;; TODO: refactor with EVAL on AST:VARIABLE
+          (lookup-variable (ast:comparison-variable node)
+                           context)))

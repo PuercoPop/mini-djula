@@ -31,7 +31,6 @@
                         (:obligatory-message . "I should be shown"))
         :render-as "2-a.html")
 
-;; FIXME: Allow NIL Keys
 (verify :template "2.djhtml"
         :with-context '((:foo . nil)
                         (:obligatory-message . " I won't be displayed"))
