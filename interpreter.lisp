@@ -56,5 +56,5 @@
   (ast:literal-value node))
 
 (defmethod eval ((node ast:comparison) context)
-  (equalp (eval (ast:comparison-left node))
-          (eval (ast:comparison-right node))))
+  (equalp (eval (ast:comparison-left node) context)
+          (eval (ast:comparison-right node) context)))
