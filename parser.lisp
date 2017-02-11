@@ -108,9 +108,9 @@
     (mpc:.return (ast:make-variable variable))))
 
 (defun .string-literal ()
-  (mpc:parser-let* ((_ (mpc:.char= #\"))
+  (mpc:parser-let* ((_ (mpc:.char= #\'))
                     (string (mpc:.word))
-                    (_ (mpc:.char= #\")))
+                    (_ (mpc:.char= #\')))
     (mpc:.return (ast:make-literal (coerce string 'string)))))
 
 (defun .var-or-val ()
@@ -136,8 +136,8 @@
   (.equality-comparison))
 
 (defun .predicate ()
-  (mpc::.or (.variable-word)
-            (.boolean-expression)))
+  (mpc:.plus (.variable-word)
+             (.boolean-expression)))
 
 (defun .text ()
   (mpc:.many (mpc:.plus (mpc::.letter)

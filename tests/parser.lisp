@@ -8,7 +8,7 @@
 
 (setf prove:*enable-colors* t)
 
-(plan 20)
+(plan 21)
 
 (ok (funcall (parser::.comment-start)
              (list #\{ #\#)))
@@ -38,8 +38,9 @@
 (ok (parse (parser::.if-block-end) "{%endif %}"))
 (ok (parse (parser::.if-block-end) "{%endif%}"))
 
-(ok (parse (parser::.string-literal) "\"HAI\""))
-(ok (parse (parser::.equality-comparison) "foo == \"HAI\""))
+(ok (parse (parser::.string-literal) "'HAI'"))
+(ok (parse (parser::.equality-comparison) "foo == 'HAI'"))
+(ok (parse (parser::.if-block-start) "{% if foo == HAI %}"))
 
 (ok (parse (parser:.if-block) "{% if foo %} hai {% endif %}"))
 
