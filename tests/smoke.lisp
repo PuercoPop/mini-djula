@@ -43,8 +43,8 @@
 
 (verify :template "3.djhtml"
         :with-context '((:foo . nil)
-                        :obligatory-message . " I won't be displayed"))
-        :render-as "3-b.html")
+                        :obligatory-message . " I won't be displayed")
+        :render-as "3-b.html"))
 
 
 (finalize)
