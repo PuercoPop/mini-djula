@@ -2,13 +2,12 @@
 
 (defsystem "mini-djula"
   :name "Mini Djula"
-  :author "Javier Olaechea"
+  :author "Javier Olaechea <pirata@gmail.com>"
   :license "GPLv3+"
+  :pathname "src/"
   :depends-on (#:alexandria
                #:string-case)
-  :components ((:static-file "lexer")
-               (:file "ast")
-               (:static-file "parser-combinators")
+  :components ((:file "ast")
                (:file "mpc")
                (:file "parser" :depends-on ("mpc"
                                             "ast"))
