@@ -1,12 +1,11 @@
 (defpackage "PARSER"
   (:use "CL")
-  (:export #:parse ;; "*GRAMMAR*"
+  (:export #:parse
            #:.comment
            #:.variable
            #:.if-block
            #:.text))
 (in-package "PARSER")
-
 
  ;; First a { token Then a # then any number of characters then a # token followed by a } token. Returns nil
 (defun .comment-start ()
@@ -33,15 +32,6 @@
                                     (mpc:.any (mpc:.anything))
                                     (.comment-end))))
     (mpc:.return (ast:make-comment (coerce result 'string)))))
-
-;; TODO: Understand why this doesn't work
-;; (defun .parse-comment ()
-;;   (mpc:parser-let*
-;;       ((_ (.comment-start)) 
-;;        (_ (mpc:.any (mpc:.not (.comment-end))))
-;;        (_ (.comment-end)))
-;;     (mpc:.return :comment-ast)))
-
 
 (defun .variable-start ()
   (mpc:parser-let*
@@ -140,17 +130,6 @@
              (.boolean-expression)))
 
 (defun .text ()
-  (mpc:.many (mpc:.plus (mpc::.letter)
-                        (mpc:.whitespace))))
-
-;; (defun .text ()
-;;   ;; AST:text
-;;   (mpc:parser-let*
-;;       ((text (mpc:.many (mpc:.anything))))
-;;     (mpc:.return (ast:make-text-node (coerce text 'string)))))
-
-(defun .text ()
-  ;; AST:text
   (mpc:parser-let*
       ((text (mpc:.anything)))
     (mpc:.return (ast:make-text-node (string text)))))
@@ -161,12 +140,7 @@
             (.if-block)
             (.text)))
 
-;; Mejor strategia
-;; Parse recibe tokens?
-;; Luego llama a top-level
-;; Luego un constant-folding step de TEXT-NODES
 (defun parse ()
-  ;; Si no estoy mirando al .eof llamar a .top-level
   (mpc:parser-let* ((ast (mpc:.many (.top-level)))
-                    (eof (mpc::.endp)))
+                    (eof (mpc:.eof)))
     (mpc:.return ast)))

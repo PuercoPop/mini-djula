@@ -1,4 +1,3 @@
-;; Clean Implementation
 (defpackage #:mpc
   (:use #:cl
         #:alexandria)
@@ -110,14 +109,18 @@
           nil
           (list (cons t tokens))))))
 
-
-;; Recursion, not chevere
 (defun .any (parser)
   "Match a parser any number of times. AKA ZERO-OR-MORE."
   (.plus (parser-let* ((x parser)
                        (xs (.any parser)))
            (.return (cons x xs)))
-       (.return nil)))
+         (.return nil)))
+
+(defun .many (parser)
+  "AKA ONE-OR-MORE"
+  (parser-let* ((x parser)
+                (y (.any parser)))
+    (.return (cons x y))))
 
 (defmacro .progn (&rest parsers)
   (if (rest parsers)
@@ -138,30 +141,6 @@
              (,name ,parser2)
              (,ignore (.progn ,@parsers)))
        (.return ,name))))
-
-;; (defun .any (parser)
-;;   "Match a parser any number of times. AKA ZERO-OR-MORE."
-;;   (lambda (tokens)
-;;     (loop :with values := nil
-;;           :for result := (funcall parser tokens)
-;;           :if result
-;;             :do (setf tokens (cdar result))
-;;                 (push (caar result) values)
-;;           :else
-;;             :return (list (cons (reverse values)
-;;                                 tokens)))))
-
-(defun .many (parser)
-  "AKA ONE-OR-MORE"
-  (parser-let* ((x parser)
-                (y (.any parser)))
-    (.return (cons x y)))
-  ;; No obiene el nuevo token
-  ;; (lambda (tokens)
-  ;;   (loop :for result := (funcall parser tokens)
-  ;;         :until (null result)
-  ;;         :append result))
-  )
 
 (defun .lower-case-char ()
   (.satisfies #'sb-unicode:lowercase-p))
@@ -194,9 +173,6 @@
 
 (defun .whitespace ()
   (.satisfies #'sb-unicode:whitespace-p))
-
-(defun .endp ()
-  (.not (.anything)))
 
 (defun .no-more-input ()
   (.not (.anything)))

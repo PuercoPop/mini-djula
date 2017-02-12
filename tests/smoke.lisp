@@ -5,7 +5,7 @@
 
 (setf prove:*enable-colors* t)
 
-(plan 0)
+(plan 5)
 ;; Assertion should include template name context and outputfile
 
 (defmacro with-template-names (pairs &body body)
@@ -44,7 +44,7 @@
 (verify :template "3.djhtml"
         :with-context '((:foo . nil)
                         :obligatory-message . " I won't be displayed")
-        :render-as "3-b.html"))
+        :render-as "3-b.html")
 
 
 (finalize)
