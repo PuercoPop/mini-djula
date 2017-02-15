@@ -21,24 +21,14 @@ Parser Combinators, Parsers that compose
 A parser takes a a sequence of input and returns a success flag, the remaining
 input and a value to collect.
 
-= Composing parsers =
-
 = Example =
 
-API
-===
+(ql:quickload :sicl-loop-support)
+(in-package #:sicl-loop)
 
-References
-==========
-
-- Parsing with Derivaties, a functional perlhttp://matt.might.net/papers/might2011derivatives.pdf
-- http://matt.might.net/articles/parsing-with-derivatives/
-- https://fsharpforfunandprofit.com/posts/understanding-parser-combinators/
-
-
-- http://smug.drewc.ca/smug.html
-- https://github.com/drewc/smug
-- Rewrite of Smug http://mr.gy/blog/maxpc.html
+(consecutive 'list
+             (singleton 'identity (lambda (c) (char= #\A c)))
+             (singleton 'identity (lambda (c) (char= #\B c))))
 "))
 (in-package "PARSER-COMBINATORS")
 
@@ -51,7 +41,7 @@ References
 ;; Invoca el PREDICATE con el primer token. Si retorna con exito entonces se
 ;; aplicar TRANSFORMER y consume un token.
 (define-parser singleton (transformer predicate)
-  (if (and (not (emptyp tokens))
+  (if (and (not (null tokens))
            (funcall predicate (car tokens)))
       (values t (funcall transformer (car tokens)) (cdr tokens))
       (values nil nil tokens)))

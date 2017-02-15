@@ -15,12 +15,11 @@ github.com/PuercoPop/mini-djula
 ¿Qué es un parser?
 
 # Qué hace?
-Funciones
-▸ Reconocer patrónes
-▸ Devolver un valor
+▸ Reconoce patrónes
+▸ Devuelve un valor
 
 # Esto nos permite
-Transformación
+Transformaciones
 
 ¿Qué es un Combinator?
 

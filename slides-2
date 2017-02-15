@@ -1,5 +1,6 @@
-How to Replace Failure by a List of Successes
-            Philip Wadler 1985
+How to Replace Failure
+by a List of Successes
+– Philip Wadler, 1985
 
 Success ⇒ Lista que contiendo el valor de retorno
 Fail ⇒ Lista vacia
@@ -37,9 +38,7 @@ Ejemplos
 ▸ Campo
 ▸ Red (Lattice)
 
-
-# Ejemplo concreto con adicion
-¿Qué es un anillo?
+@img/confused.png
 
 ¿Por qué me estas hablando de esto?
 # Cuando podemos probar que se cumplen unas propiedas sabemos que otras no tan inmediatas se derivan de esta.
@@ -84,7 +83,6 @@ Parsers Primitivos
 
 (defun .fail ()
   (lambda (tokens)
-    (declare (ignore tokens))
     nil))
 
 (defun .anything ()
@@ -108,7 +106,6 @@ bind, sequenciación
 plus, alternación
 
 (defun .plus (parser-1 parser-2)
-  "Non-deterministic choice"
   (lambda (tokens)
     (append (funcall parser-1 tokens)
             (funcall parser-2 tokens))))
@@ -155,7 +152,7 @@ Syntax sugar para la sequenciación
       `(progn ,@body)))
 
 # Memeficar
-@DAFUQ
+@img/dafuq.png
 
 (parser-let* ((a (.char #\A))
               (b (.char #\B)))
@@ -204,6 +201,7 @@ Implementacion
 ¿Preguntas?
 
 # Hacerlo imagen?
-SHOW ME DA CODE!
+# SHOW ME DA CODE!
+@img/to-the-code.png
 
 FIN
