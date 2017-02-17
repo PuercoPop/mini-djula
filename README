@@ -11,7 +11,7 @@ http://www.cs.nott.ac.uk/~pszgmh/monparsing.pdf
   https://pdos.csail.mit.edu/~baford/packrat/thesis/
 
 - Parsec: Direct Style Monadic Parser Combinators For The Real World
-  http://research.microsoft.com/en-us/um/people/daan/download/papers/parsec-paper.pdf
+  https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/parsec-paper-letter.pdf
 
 - How to turn a failurue into a list of successes, Philip Wadler
   https://rkrishnan.org/files/wadler-1985.pdf
